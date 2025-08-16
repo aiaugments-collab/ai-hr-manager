@@ -1,0 +1,9 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+always run npm run lint to check for lint b4 saying you are done with a feature
+
+this should be a dead simple application, you must not compicate things, dont add nice to have features, just core features that just works, 
+

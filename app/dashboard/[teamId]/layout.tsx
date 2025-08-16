@@ -2,64 +2,36 @@
 
 import SidebarLayout, { SidebarItem } from "@/components/sidebar-layout";
 import { SelectedTeamSwitcher, useUser } from "@stackframe/stack";
-import { BadgePercent, BarChart4, Columns3, Globe, Locate, Settings2, ShoppingBag, ShoppingCart, Users } from "lucide-react";
+import { FileText, MessageSquare, Settings2, Users, BarChart3 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 const navigationItems: SidebarItem[] = [
   {
     name: "Overview",
     href: "/",
-    icon: Globe,
+    icon: BarChart3,
     type: "item",
   },
   {
     type: 'label',
-    name: 'Management',
+    name: 'HR Management',
   },
   {
-    name: "Products",
-    href: "/products",
-    icon: ShoppingBag,
-    type: "item",
-  },
-  {
-    name: "People",
-    href: "/people",
+    name: "Candidates",
+    href: "/candidates",
     icon: Users,
     type: "item",
   },
   {
-    name: "Segments",
-    href: "/segments",
-    icon: Columns3,
+    name: "Documents",
+    href: "/documents",
+    icon: FileText,
     type: "item",
   },
   {
-    name: "Regions",
-    href: "/regions",
-    icon: Locate,
-    type: "item",
-  },
-  {
-    type: 'label',
-    name: 'Monetization',
-  },
-  {
-    name: "Revenue",
-    href: "/revenue",
-    icon: BarChart4,
-    type: "item",
-  },
-  {
-    name: "Orders",
-    href: "/orders",
-    icon: ShoppingCart,
-    type: "item",
-  },
-  {
-    name: "Discounts",
-    href: "/discounts",
-    icon: BadgePercent,
+    name: "AI Assistant",
+    href: "/assistant",
+    icon: MessageSquare,
     type: "item",
   },
   {
