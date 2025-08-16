@@ -5,5 +5,34 @@ alwaysApply: false
 ---
 always run npm run lint to check for lint b4 saying you are done with a feature
 
-this should be a dead simple application, you must not compicate things, dont add nice to have features, just core features that just works, 
+this should be a dead simple application, you must not compicate things, dont add nice to have features, just core features that just works,
+
+## Logger Usage
+Use the logger as simple functions - no need to create instances:
+
+```typescript
+import { logger } from '@/lib/utils/logger';
+
+// Basic logging
+logger.debug("Debug message");
+logger.info("Info message", { data: "optional" });
+logger.warn("Warning message");
+logger.error("Error message", error);
+
+// With context
+logger.info("Upload started", { fileCount: 3 }, "UPLOAD");
+
+// API calls
+logger.logApiCall("POST", "/api/upload", 200, 1500);
+
+// User actions
+logger.logUserAction("file_uploaded", { fileName: "cv.pdf" });
+
+// Performance timing
+const endTimer = logger.time("file_processing");
+// ... do work
+endTimer(); // logs the duration
+```
+
+Always use logger for debugging and tracking important events. 
 

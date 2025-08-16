@@ -1,9 +1,9 @@
 import { db } from '@/lib/firebase/config';
 import { collection, query, where, orderBy, getDocs, doc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import { Candidate, CandidateStats } from '@/lib/types/candidate';
-import { createLogger } from '@/lib/utils/logger';
+import { logger } from '@/lib/utils/logger';
 
-const logger = createLogger('CandidateService');
+// Using logger with context 'CandidateService'
 
 export class CandidateService {
   private static readonly COLLECTION_NAME = 'candidates';
@@ -271,6 +271,7 @@ export class CandidateService {
       minScore?: number;
       maxScore?: number;
       experienceLevel?: string | 'all';
+      role?: string | 'all';
     }
   ): Candidate[] {
     logger.debug('Filtering candidates', { 
@@ -308,6 +309,13 @@ export class CandidateService {
     if (filters.experienceLevel && filters.experienceLevel !== 'all') {
       filtered = filtered.filter(candidate => 
         candidate.aiAnalysis.experienceLevel === filters.experienceLevel
+      );
+    }
+
+    // Role filter (position-based)
+    if (filters.role && filters.role !== 'all') {
+      filtered = filtered.filter(candidate => 
+        candidate.position.toLowerCase().includes(filters.role!.toLowerCase())
       );
     }
 

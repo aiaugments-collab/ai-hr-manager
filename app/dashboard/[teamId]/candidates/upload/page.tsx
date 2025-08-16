@@ -159,13 +159,13 @@ export default function UploadPage() {
   const getStatusColor = (status: UploadFile['status']) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-gradient-to-r from-green-50 to-emerald-100 text-green-700 border-green-200 shadow-sm';
       case 'error':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-gradient-to-r from-red-50 to-pink-100 text-red-700 border-red-200 shadow-sm';
       case 'processing':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'bg-gradient-to-r from-blue-50 to-indigo-100 text-blue-700 border-blue-200 shadow-sm';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-gradient-to-r from-gray-50 to-slate-100 text-gray-700 border-gray-200 shadow-sm';
     }
   };
 
@@ -173,19 +173,19 @@ export default function UploadPage() {
   const hasCompletedFiles = completedCount > 0;
 
   return (
-    <div className="flex-col">
-      <div className="flex-1 space-y-6 p-8 pt-6">
+    <div className="flex-col min-h-screen">
+      <div className="flex-1 space-y-6 p-6 md:p-8">
         {/* Header */}
         <div className="flex items-center gap-4">
           <Link href={`/dashboard/${params.teamId}/candidates`}>
-            <Button variant="outline" size="sm">
+            <Button className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 hover:shadow-md transition-all duration-200 rounded-xl">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Candidates
             </Button>
           </Link>
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">Upload CVs</h2>
-            <p className="text-muted-foreground">
+            <h1 className="text-3xl font-bold text-gradient-primary">Upload CVs</h1>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">
               Upload multiple PDF files and let AI analyze them to extract structured candidate data
             </p>
           </div>
@@ -193,27 +193,29 @@ export default function UploadPage() {
 
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Upload Area */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Select PDF Files</CardTitle>
+          <Card className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-100">Select PDF Files</CardTitle>
             </CardHeader>
             <CardContent>
               <div
-                className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                className={`border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 ${
                   dragActive
-                    ? 'border-primary bg-primary/5'
-                    : 'border-muted-foreground/25 hover:border-muted-foreground/50'
+                    ? 'border-blue-400 bg-blue-50/50 dark:bg-blue-900/20 shadow-lg scale-105'
+                    : 'border-slate-300 dark:border-slate-600 hover:border-blue-400 hover:bg-blue-50/30 dark:hover:bg-blue-900/10'
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
               >
-                <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">
+                <div className="h-16 w-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                  <Upload className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">
                   Drag & drop PDF files here
                 </h3>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-slate-600 dark:text-slate-400 mb-6">
                   or click to browse files
                 </p>
                 <input
@@ -225,13 +227,13 @@ export default function UploadPage() {
                   id="file-input"
                 />
                 <Button 
-                  variant="outline" 
                   onClick={() => document.getElementById('file-input')?.click()}
                   type="button"
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 rounded-xl px-6"
                 >
                   Browse Files
                 </Button>
-                <p className="text-xs text-muted-foreground mt-4">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-4">
                   PDF files only, max 10MB each
                 </p>
               </div>
@@ -239,9 +241,13 @@ export default function UploadPage() {
               {files.length > 0 && (
                 <div className="mt-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-medium">Selected Files ({files.length})</h4>
+                    <h4 className="font-semibold text-slate-800 dark:text-slate-100">Selected Files ({files.length})</h4>
                     {!isUploading && (
-                      <Button onClick={uploadFiles} disabled={files.length === 0}>
+                      <Button 
+                        onClick={uploadFiles} 
+                        disabled={files.length === 0}
+                        className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 rounded-lg"
+                      >
                         <Upload className="h-4 w-4 mr-2" />
                         Process Files
                       </Button>
@@ -249,23 +255,23 @@ export default function UploadPage() {
                   </div>
 
                   {isUploading && (
-                    <div className="mb-4">
-                      <div className="flex items-center justify-between text-sm mb-2">
-                        <span>🤖 AI analyzing CVs with Gemini...</span>
-                        <span>{uploadProgress}%</span>
+                    <div className="mb-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl border border-blue-200/50 dark:border-blue-800/50">
+                      <div className="flex items-center justify-between text-sm mb-3">
+                        <span className="font-medium text-blue-700 dark:text-blue-300">🤖 AI analyzing CVs with Gemini...</span>
+                        <span className="font-bold text-blue-800 dark:text-blue-200">{uploadProgress}%</span>
                       </div>
-                      <Progress value={uploadProgress} />
-                      <p className="text-xs text-muted-foreground mt-2">
+                      <Progress value={uploadProgress} className="h-2" />
+                      <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
                         Processing {files.length} files in parallel batches
                       </p>
                     </div>
                   )}
 
-                  <div className="space-y-2 max-h-60 overflow-y-auto">
+                  <div className="space-y-3 max-h-60 overflow-y-auto">
                     {files.map((file) => (
                       <div
                         key={file.id}
-                        className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+                        className="flex items-center justify-between p-4 bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm rounded-xl border border-slate-200/60 dark:border-slate-600/60 shadow-sm hover:shadow-md transition-all duration-200"
                       >
                         <div className="flex items-center gap-3 min-w-0 flex-1">
                           {getStatusIcon(file.status)}
@@ -326,36 +332,39 @@ export default function UploadPage() {
           </Card>
 
           {/* Results Summary */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Processing Results</CardTitle>
+          <Card className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-100">Processing Results</CardTitle>
             </CardHeader>
             <CardContent>
               {files.length === 0 ? (
-                <div className="text-center py-8">
-                  <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-muted-foreground">
-                    No files selected yet. Upload PDF files to see processing results.
+                <div className="text-center py-12">
+                  <div className="h-16 w-16 bg-gradient-to-br from-slate-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <FileText className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">No files selected yet</h3>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Upload PDF files to see processing results.
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-4 bg-muted/50 rounded-lg">
-                      <div className="text-2xl font-bold">{files.length}</div>
-                      <div className="text-sm text-muted-foreground">Total Files</div>
+                    <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200/50 dark:border-blue-800/50 rounded-xl shadow-sm">
+                      <div className="text-3xl font-bold text-blue-800 dark:text-blue-200">{files.length}</div>
+                      <div className="text-sm text-blue-600 dark:text-blue-400 font-medium">Total Files</div>
                     </div>
-                    <div className="text-center p-4 bg-green-50 rounded-lg">
-                      <div className="text-2xl font-bold text-green-600">{completedCount}</div>
-                      <div className="text-sm text-muted-foreground">Processed</div>
+                    <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200/50 dark:border-green-800/50 rounded-xl shadow-sm">
+                      <div className="text-3xl font-bold text-green-800 dark:text-green-200">{completedCount}</div>
+                      <div className="text-sm text-green-600 dark:text-green-400 font-medium">Processed</div>
                     </div>
                   </div>
 
                   {hasCompletedFiles && (
-                    <div className="pt-4 border-t">
+                    <div className="pt-4 border-t border-slate-200/60 dark:border-slate-700/60">
                       <Button 
                         onClick={() => router.push(`/dashboard/${params.teamId}/candidates`)}
-                        className="w-full"
+                        className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 rounded-xl py-3"
                       >
                         View Processed Candidates
                       </Button>

@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Candidate } from '@/lib/types/candidate';
 import { CustomParser, ParsedCandidate } from '@/lib/utils/custom-parser';
-import { createLogger } from '@/lib/utils/logger';
+import { logger } from '@/lib/utils/logger';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
@@ -14,7 +14,7 @@ export interface GeminiProcessingResult {
 
 export class GeminiService {
   private static model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-  private static logger = createLogger('GeminiService');
+  // Using logger with context 'GeminiService'
 
   /**
    * Process PDF file directly with Gemini and extract candidate data
@@ -23,18 +23,18 @@ export class GeminiService {
     buffer: Buffer, 
     fileName: string
   ): Promise<GeminiProcessingResult> {
-    const timer = this.logger.time(`Processing PDF: ${fileName}`);
+    const timer = logger.time(`Processing PDF: ${fileName}`, 'GeminiService');
     
     try {
-      this.logger.info('Starting PDF processing', { fileName, bufferSize: buffer.length });
+      logger.info('Starting PDF processing', { fileName, bufferSize: buffer.length }, 'GeminiService');
       
       const prompt = this.buildCandidateExtractionPrompt();
       
       // Convert buffer to base64 for Gemini
       const base64Data = buffer.toString('base64');
-      this.logger.debug('PDF converted to base64', { fileName, base64Length: base64Data.length });
+      logger.debug('PDF converted to base64', { fileName, base64Length: base64Data.length }, 'GeminiService');
       
-      this.logger.info('Sending request to Gemini API', { fileName });
+      logger.info('Sending request to Gemini API', { fileName }, 'GeminiService');
       const result = await this.model.generateContent([
         {
           inlineData: {
@@ -47,13 +47,13 @@ export class GeminiService {
 
       const response = await result.response;
       const text = response.text();
-      this.logger.debug('Received response from Gemini', { fileName, responseLength: text.length });
+      logger.debug('Received response from Gemini', { fileName, responseLength: text.length }, 'GeminiService');
 
       // Parse custom delimited response
       const candidateData = CustomParser.parseDelimitedData(text);
       
       if (!candidateData) {
-        this.logger.error('Failed to parse candidate data from AI response', { fileName, rawResponse: text });
+        logger.error('Failed to parse candidate data from AI response', { fileName, rawResponse: text }, 'GeminiService');
         return {
           success: false,
           error: 'Failed to parse candidate data from AI response',
@@ -64,17 +64,17 @@ export class GeminiService {
       // Validate parsed data
       const validation = CustomParser.validateParsedData(candidateData);
       if (!validation.valid) {
-        this.logger.warn('Parsed data validation failed', { fileName, errors: validation.errors, data: candidateData });
+        logger.warn('Parsed data validation failed', { fileName, errors: validation.errors, data: candidateData }, 'GeminiService');
       }
 
       // Structure the candidate data
       const candidate = this.validateAndStructureCandidate(candidateData, fileName);
       
-      this.logger.info('PDF processing completed successfully', { 
+      logger.info('PDF processing completed successfully', { 
         fileName, 
         candidateName: candidate.name,
         score: candidate.score 
-      });
+      }, 'GeminiService');
       
       timer();
       return {
@@ -85,7 +85,7 @@ export class GeminiService {
 
     } catch (error) {
       timer();
-      this.logger.error(`Gemini processing failed for ${fileName}`, error);
+      logger.error(`Gemini processing failed for ${fileName}`, error, 'GeminiService');
       
       let errorMessage = 'Unknown Gemini processing error';
       
@@ -127,11 +127,11 @@ export class GeminiService {
     files: { buffer: Buffer; fileName: string }[],
     batchSize: number = 8
   ): Promise<GeminiProcessingResult[]> {
-    this.logger.info('Starting batch processing', { 
+    logger.info('Starting batch processing', { 
       totalFiles: files.length, 
       batchSize,
       fileNames: files.map(f => f.fileName)
-    });
+    }, 'GeminiService');
     
     const results: GeminiProcessingResult[] = [];
     const totalBatches = Math.ceil(files.length / batchSize);
@@ -141,12 +141,12 @@ export class GeminiService {
       const batchNumber = Math.floor(i / batchSize) + 1;
       const batch = files.slice(i, i + batchSize);
       
-      this.logger.info(`Processing batch ${batchNumber}/${totalBatches}`, {
+      logger.info(`Processing batch ${batchNumber}/${totalBatches}`, {
         batchFiles: batch.map(f => f.fileName),
         batchSize: batch.length
-      });
+      }, 'GeminiService');
       
-      const batchTimer = this.logger.time(`Batch ${batchNumber}`);
+      const batchTimer = logger.time(`Batch ${batchNumber}`, 'GeminiService');
       
       const batchPromises = batch.map(({ buffer, fileName }) =>
         this.processPDFToCandidate(buffer, fileName)
@@ -158,25 +158,25 @@ export class GeminiService {
       batchTimer();
       
       const successCount = batchResults.filter(r => r.success).length;
-      this.logger.info(`Batch ${batchNumber} completed`, {
+      logger.info(`Batch ${batchNumber} completed`, {
         successful: successCount,
         failed: batchResults.length - successCount,
         results: batchResults.map(r => ({ fileName: r.fileName, success: r.success }))
-      });
+      }, 'GeminiService');
       
       // Small delay between batches to be respectful to the API
       if (i + batchSize < files.length) {
-        this.logger.debug('Waiting between batches', { delay: '1000ms' });
+        logger.debug('Waiting between batches', { delay: '1000ms' }, 'GeminiService');
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
     
     const totalSuccess = results.filter(r => r.success).length;
-    this.logger.info('Batch processing completed', {
+    logger.info('Batch processing completed', {
       totalFiles: files.length,
       successful: totalSuccess,
       failed: results.length - totalSuccess
-    });
+    }, 'GeminiService');
     
     return results;
   }

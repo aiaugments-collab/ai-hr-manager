@@ -3,11 +3,10 @@ import { GeminiService } from '@/lib/services/gemini-service';
 import { db } from '@/lib/firebase/config';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
-import { createLogger } from '@/lib/utils/logger';
+import { logger } from '@/lib/utils/logger';
 
 export async function POST(request: NextRequest) {
-  const logger = createLogger('UploadAPI');
-  const apiTimer = logger.time('Upload API Request');
+  const apiTimer = logger.time('Upload API Request', 'UploadAPI');
   
   try {
     logger.info('Upload API request received');

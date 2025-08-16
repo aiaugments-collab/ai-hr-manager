@@ -49,7 +49,8 @@ export interface CandidateFilters {
   minScore: number;
   maxScore: number;
   status: Candidate['status'] | 'all';
-  experienceLevel: AIAnalysis['experienceLevel'] | 'all';
+  experienceLevel: AIAnalysis['experienceLevel'] | 'all';  
+  role: string | 'all'; // for position-based filtering (software engineer, manager, etc.)
   skills: string[];
 }
 

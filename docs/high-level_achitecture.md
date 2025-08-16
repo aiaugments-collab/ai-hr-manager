@@ -4,7 +4,7 @@ Let me plan the AI HR Manager architecture in plain English, focusing on just th
 
 ## High-Level Architecture
 
-### 1. Candidate Management System
+### 1. Candidate Management System ✅
 **What it does:** HR uploads CVs, system analyzes and scores them
 
 **How it works:**
@@ -18,7 +18,7 @@ Let me plan the AI HR Manager architecture in plain English, focusing on just th
 - HR sees a list of all candidates with their scores, basic info, and can click to view full analysis
 - Simple sorting by score (highest first) and basic filtering
 
-### 2. Document Management (Knowledge Base)
+### 2. Document Management (Knowledge Base) ❌
 **What it does:** Store and organize company documents that the AI can reference
 
 **How it works:**
@@ -28,7 +28,7 @@ Let me plan the AI HR Manager architecture in plain English, focusing on just th
 - Each document gets processed to extract text content for the AI to use
 - No fancy categorization or tagging - just a searchable repository
 
-### 3. AI Assistant
+### 3. AI Assistant ❌
 **What it does:** Answer HR questions using the knowledge base
 
 **How it works:**

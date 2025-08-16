@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { CandidateService } from '@/lib/services/candidate-service';
 import { Candidate } from '@/lib/types/candidate';
-import { createLogger } from '@/lib/utils/logger';
+import { logger } from '@/lib/utils/logger';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -94,7 +94,7 @@ export default function CandidateDetailPage() {
   // Fetch candidate details
   useEffect(() => {
     const fetchCandidate = async () => {
-      const logger = createLogger('CandidateDetailPage');
+      // Using logger with context 'CandidateDetailPage'
       
       try {
         setLoading(true);
@@ -126,8 +126,7 @@ export default function CandidateDetailPage() {
         const errorMessage = err instanceof Error ? err.message : 'Failed to load candidate details';
         setError(errorMessage);
         
-        const logger = createLogger('CandidateDetailPage');
-        logger.error('Failed to fetch candidate details', err);
+        logger.error('Failed to fetch candidate details', err, 'CandidateDetailPage');
       } finally {
         setLoading(false);
       }
@@ -142,7 +141,7 @@ export default function CandidateDetailPage() {
   const handleStatusUpdate = async (newStatus: Candidate['status']) => {
     if (!candidate || updating) return;
     
-    const logger = createLogger('CandidateDetailPage');
+    // Using logger with context 'CandidateDetailPage'
     
     try {
       setUpdating(true);

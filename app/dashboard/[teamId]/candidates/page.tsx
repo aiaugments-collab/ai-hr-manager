@@ -9,7 +9,7 @@ import { Candidate, CandidateFilters, CandidateStats } from '@/lib/types/candida
 import { Upload, Users, Star, FileText, TrendingUp, Loader2, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { createLogger } from '@/lib/utils/logger';
+import { logger } from '@/lib/utils/logger';
 
 export default function CandidatesPage() {
   const params = useParams<{ teamId: string }>();
@@ -32,13 +32,14 @@ export default function CandidatesPage() {
     maxScore: 100,
     status: 'all',
     experienceLevel: 'all',
+    role: 'all',
     skills: []
   });
 
   // Fetch candidates on component mount
   useEffect(() => {
     const fetchCandidates = async () => {
-      const logger = createLogger('CandidatesPage');
+      // Using logger with context 'CandidatesPage'
       
       try {
         setLoading(true);
@@ -73,7 +74,7 @@ export default function CandidatesPage() {
 
   // Handle candidate status updates
   const handleStatusUpdate = async (candidateId: string, newStatus: Candidate['status']) => {
-    const logger = createLogger('CandidatesPage');
+    // Using logger with context 'CandidatesPage'
     
     try {
       logger.info('Updating candidate status', { candidateId, newStatus });
@@ -109,27 +110,27 @@ export default function CandidatesPage() {
   // Show loading state
   if (loading) {
     return (
-      <div className="flex-col">
-        <div className="flex-1 space-y-6 p-8 pt-6">
+      <div className="flex-col min-h-screen">
+        <div className="flex-1 space-y-6 p-6 md:p-8">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight">Candidates</h2>
-              <p className="text-muted-foreground">
+              <h1 className="text-3xl font-bold text-gradient-primary">Candidates</h1>
+              <p className="text-slate-600 dark:text-slate-400 mt-1">
                 Manage and review candidate applications with AI-powered analysis
               </p>
             </div>
             <Link href={`/dashboard/${params.teamId}/candidates/upload`}>
-              <Button className="flex items-center gap-2">
+              <Button className="inline-flex items-center justify-center rounded-xl text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 h-10 px-4 gap-2">
                 <Upload className="h-4 w-4" />
                 Upload CVs
               </Button>
             </Link>
           </div>
           
-          <div className="flex items-center justify-center py-12">
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-6 w-6 animate-spin" />
-              <span className="text-muted-foreground">Loading candidates...</span>
+          <div className="flex items-center justify-center py-16">
+            <div className="flex items-center gap-3 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm px-6 py-4 rounded-xl border border-slate-200/60 dark:border-slate-700/60 shadow-lg">
+              <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+              <span className="text-slate-700 dark:text-slate-300 font-medium">Loading candidates...</span>
             </div>
           </div>
         </div>
@@ -140,30 +141,35 @@ export default function CandidatesPage() {
   // Show error state
   if (error) {
     return (
-      <div className="flex-col">
-        <div className="flex-1 space-y-6 p-8 pt-6">
+      <div className="flex-col min-h-screen">
+        <div className="flex-1 space-y-6 p-6 md:p-8">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight">Candidates</h2>
-              <p className="text-muted-foreground">
+              <h1 className="text-3xl font-bold text-gradient-primary">Candidates</h1>
+              <p className="text-slate-600 dark:text-slate-400 mt-1">
                 Manage and review candidate applications with AI-powered analysis
               </p>
             </div>
             <Link href={`/dashboard/${params.teamId}/candidates/upload`}>
-              <Button className="flex items-center gap-2">
+              <Button className="inline-flex items-center justify-center rounded-xl text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 h-10 px-4 gap-2">
                 <Upload className="h-4 w-4" />
                 Upload CVs
               </Button>
             </Link>
           </div>
           
-          <Card>
-            <CardContent className="flex items-center justify-center py-12">
+          <Card className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl">
+            <CardContent className="flex items-center justify-center py-16">
               <div className="text-center">
-                <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Failed to Load Candidates</h3>
-                <p className="text-muted-foreground mb-4">{error}</p>
-                <Button onClick={() => window.location.reload()}>
+                <div className="h-16 w-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                  <AlertCircle className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">Failed to Load Candidates</h3>
+                <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-md">{error}</p>
+                <Button 
+                  onClick={() => window.location.reload()}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 rounded-xl px-6"
+                >
                   Try Again
                 </Button>
               </div>
@@ -175,18 +181,18 @@ export default function CandidatesPage() {
   }
 
   return (
-    <div className="flex-col">
-      <div className="flex-1 space-y-6 p-8 pt-6">
+    <div className="flex-col min-h-screen">
+      <div className="flex-1 space-y-6 p-6 md:p-8">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">Candidates</h2>
-            <p className="text-muted-foreground">
+            <h1 className="text-3xl font-bold text-gradient-primary">Candidates</h1>
+            <p className="text-slate-600 dark:text-slate-400 mt-1">
               Manage and review candidate applications with AI-powered analysis
             </p>
           </div>
           <Link href={`/dashboard/${params.teamId}/candidates/upload`}>
-            <Button className="flex items-center gap-2">
+            <Button className="inline-flex items-center justify-center rounded-xl text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 h-10 px-4 gap-2">
               <Upload className="h-4 w-4" />
               Upload CVs
             </Button>
@@ -194,67 +200,77 @@ export default function CandidatesPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Candidates</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+          <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200/50 dark:border-blue-800/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 transform hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-blue-700 dark:text-blue-300">Total Candidates</CardTitle>
+              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                <Users className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.total}</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-3xl font-bold text-blue-900 dark:text-blue-100">{stats.total}</div>
+              <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">
                 All applications received
               </p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">New Applications</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
+          <Card className="bg-gradient-to-br from-emerald-50 to-teal-100 dark:from-emerald-900/20 dark:to-teal-900/20 border-emerald-200/50 dark:border-emerald-800/50 hover:shadow-xl hover:shadow-emerald-500/10 transition-all duration-300 transform hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">New Applications</CardTitle>
+              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+                <FileText className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.new}</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">{stats.new}</div>
+              <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-1">
                 Awaiting review
               </p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Shortlisted</CardTitle>
-              <Star className="h-4 w-4 text-muted-foreground" />
+          <Card className="bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 border-purple-200/50 dark:border-purple-800/50 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 transform hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-purple-700 dark:text-purple-300">Shortlisted</CardTitle>
+              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                <Star className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.shortlisted}</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-3xl font-bold text-purple-900 dark:text-purple-100">{stats.shortlisted}</div>
+              <p className="text-sm text-purple-600 dark:text-purple-400 mt-1">
                 Top candidates selected
               </p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">High Scores</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          <Card className="bg-gradient-to-br from-orange-50 to-amber-100 dark:from-orange-900/20 dark:to-amber-900/20 border-orange-200/50 dark:border-orange-800/50 hover:shadow-xl hover:shadow-orange-500/10 transition-all duration-300 transform hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-orange-700 dark:text-orange-300">High Scores</CardTitle>
+              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center">
+                <TrendingUp className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.highScoreCount}</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-3xl font-bold text-orange-900 dark:text-orange-100">{stats.highScoreCount}</div>
+              <p className="text-sm text-orange-600 dark:text-orange-400 mt-1">
                 Score 80+ candidates
               </p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Average Score</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+          <Card className="bg-gradient-to-br from-slate-50 to-gray-100 dark:from-slate-900/20 dark:to-gray-900/20 border-slate-200/50 dark:border-slate-800/50 hover:shadow-xl hover:shadow-slate-500/10 transition-all duration-300 transform hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-slate-700 dark:text-slate-300">Average Score</CardTitle>
+              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center">
+                <TrendingUp className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.averageScore}</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-3xl font-bold text-slate-900 dark:text-slate-100">{stats.averageScore}</div>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                 Overall candidate quality
               </p>
             </CardContent>
@@ -262,20 +278,22 @@ export default function CandidatesPage() {
         </div>
 
         {/* Candidates List */}
-        <Card>
-          <CardHeader>
-            <CardTitle>All Candidates</CardTitle>
+        <Card className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-100">All Candidates</CardTitle>
           </CardHeader>
           <CardContent>
             {candidates.length === 0 ? (
-              <div className="text-center py-12">
-                <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">No Candidates Yet</h3>
-                <p className="text-muted-foreground mb-4">
+              <div className="text-center py-16">
+                <div className="h-20 w-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                  <Users className="h-10 w-10 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">No Candidates Yet</h3>
+                <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-md mx-auto">
                   Upload some CVs to get started with AI-powered candidate analysis
                 </p>
                 <Link href={`/dashboard/${params.teamId}/candidates/upload`}>
-                  <Button>
+                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 rounded-xl px-6 py-3">
                     <Upload className="h-4 w-4 mr-2" />
                     Upload First CV
                   </Button>

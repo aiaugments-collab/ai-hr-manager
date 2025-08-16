@@ -3,6 +3,7 @@ import { Candidate, CandidateStats } from '@/lib/types/candidate';
 export const mockCandidates: Candidate[] = [
   {
     id: '1',
+    teamId: 'team-1',
     name: 'Sarah Johnson',
     email: 'sarah.johnson@email.com',
     phone: '+1 (555) 123-4567',
@@ -11,6 +12,8 @@ export const mockCandidates: Candidate[] = [
     score: 92,
     status: 'shortlisted',
     uploadedAt: new Date('2025-01-15'),
+    createdAt: new Date('2025-01-15'),
+    updatedAt: new Date('2025-01-15'),
     cvUrl: '/cvs/sarah-johnson.pdf',
     skills: ['React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker'],
     education: [
@@ -57,6 +60,7 @@ export const mockCandidates: Candidate[] = [
   },
   {
     id: '2',
+    teamId: 'team-1',
     name: 'Michael Chen',
     email: 'michael.chen@email.com',
     phone: '+1 (555) 987-6543',
@@ -65,6 +69,8 @@ export const mockCandidates: Candidate[] = [
     score: 88,
     status: 'reviewed',
     uploadedAt: new Date('2025-01-14'),
+    createdAt: new Date('2025-01-14'),
+    updatedAt: new Date('2025-01-14'),
     cvUrl: '/cvs/michael-chen.pdf',
     skills: ['Product Strategy', 'Agile', 'Data Analysis', 'User Research', 'SQL', 'Figma'],
     education: [
@@ -111,6 +117,7 @@ export const mockCandidates: Candidate[] = [
   },
   {
     id: '3',
+    teamId: 'team-1',
     name: 'Emily Rodriguez',
     email: 'emily.rodriguez@email.com',
     phone: '+1 (555) 456-7890',
@@ -119,6 +126,8 @@ export const mockCandidates: Candidate[] = [
     score: 75,
     status: 'new',
     uploadedAt: new Date('2025-01-16'),
+    createdAt: new Date('2025-01-16'),
+    updatedAt: new Date('2025-01-16'),
     cvUrl: '/cvs/emily-rodriguez.pdf',
     skills: ['UI/UX Design', 'Figma', 'Adobe Creative Suite', 'Prototyping', 'User Research', 'HTML/CSS'],
     education: [
@@ -159,6 +168,7 @@ export const mockCandidates: Candidate[] = [
   },
   {
     id: '4',
+    teamId: 'team-1',
     name: 'David Kim',
     email: 'david.kim@email.com',
     phone: '+1 (555) 321-0987',
@@ -167,6 +177,8 @@ export const mockCandidates: Candidate[] = [
     score: 71,
     status: 'reviewed',
     uploadedAt: new Date('2025-01-13'),
+    createdAt: new Date('2025-01-13'),
+    updatedAt: new Date('2025-01-13'),
     cvUrl: '/cvs/david-kim.pdf',
     skills: ['Python', 'Machine Learning', 'SQL', 'TensorFlow', 'Statistics', 'R'],
     education: [
@@ -205,6 +217,7 @@ export const mockCandidates: Candidate[] = [
   },
   {
     id: '5',
+    teamId: 'team-1',
     name: 'Lisa Thompson',
     email: 'lisa.thompson@email.com',
     phone: '+1 (555) 654-3210',
@@ -213,6 +226,8 @@ export const mockCandidates: Candidate[] = [
     score: 58,
     status: 'rejected',
     uploadedAt: new Date('2025-01-12'),
+    createdAt: new Date('2025-01-12'),
+    updatedAt: new Date('2025-01-12'),
     cvUrl: '/cvs/lisa-thompson.pdf',
     skills: ['Digital Marketing', 'Social Media', 'Content Creation', 'Google Analytics', 'SEO'],
     education: [

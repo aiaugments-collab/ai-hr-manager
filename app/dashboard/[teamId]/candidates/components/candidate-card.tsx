@@ -28,15 +28,15 @@ export function CandidateCard({ candidate, onStatusUpdate }: CandidateCardProps)
   const getStatusColor = (status: Candidate['status']) => {
     switch (status) {
       case 'new':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'bg-gradient-to-r from-blue-50 to-indigo-100 text-blue-700 border-blue-200 shadow-sm';
       case 'reviewed':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'bg-gradient-to-r from-yellow-50 to-orange-100 text-yellow-700 border-yellow-200 shadow-sm';
       case 'shortlisted':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-gradient-to-r from-green-50 to-emerald-100 text-green-700 border-green-200 shadow-sm';
       case 'rejected':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-gradient-to-r from-red-50 to-pink-100 text-red-700 border-red-200 shadow-sm';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-gradient-to-r from-gray-50 to-slate-100 text-gray-700 border-gray-200 shadow-sm';
     }
   };
 
@@ -58,19 +58,19 @@ export function CandidateCard({ candidate, onStatusUpdate }: CandidateCardProps)
   };
 
   return (
-    <Card className="hover:shadow-md transition-all duration-200 cursor-pointer border-border/50 hover:border-border">
+    <Card className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 hover:shadow-xl hover:shadow-slate-500/10 transition-all duration-300 cursor-pointer hover:-translate-y-1 transform">
       <Link href={`/dashboard/${params.teamId}/candidates/${candidate.id}`} className="block h-full">
         <CardHeader className="pb-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-start gap-3 min-w-0 flex-1">
-              <Avatar className="h-12 w-12 flex-shrink-0">
-                <AvatarFallback className="bg-primary/10 text-primary font-semibold text-sm">
+              <Avatar className="h-12 w-12 flex-shrink-0 shadow-lg">
+                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold text-sm">
                   {getInitials(candidate.name)}
                 </AvatarFallback>
               </Avatar>
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-lg leading-tight truncate">{candidate.name}</h3>
-                <p className="text-sm text-muted-foreground mt-0.5 truncate">{candidate.position}</p>
+                <h3 className="font-bold text-lg leading-tight truncate text-slate-800 dark:text-slate-100">{candidate.name}</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-0.5 truncate">{candidate.position}</p>
               </div>
             </div>
             <div className="flex flex-col items-end gap-2 flex-shrink-0">
@@ -114,15 +114,15 @@ export function CandidateCard({ candidate, onStatusUpdate }: CandidateCardProps)
 
           {/* Skills Section */}
           <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">Key Skills:</p>
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">Key Skills:</p>
             <div className="flex flex-wrap gap-1.5">
               {candidate.skills.slice(0, 4).map((skill) => (
-                <Badge key={skill} variant="secondary" className="text-xs px-2 py-1">
+                <Badge key={skill} className="text-xs px-2 py-1 bg-gradient-to-r from-blue-50 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 shadow-sm">
                   {skill}
                 </Badge>
               ))}
               {candidate.skills.length > 4 && (
-                <Badge variant="secondary" className="text-xs px-2 py-1">
+                <Badge className="text-xs px-2 py-1 bg-gradient-to-r from-slate-50 to-gray-100 dark:from-slate-800 dark:to-gray-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 shadow-sm">
                   +{candidate.skills.length - 4} more
                 </Badge>
               )}
@@ -146,15 +146,14 @@ export function CandidateCard({ candidate, onStatusUpdate }: CandidateCardProps)
                      <div className="flex gap-2">
                        <Button
                          size="sm"
-                         className="flex-1 bg-green-600 hover:bg-green-700 text-white text-xs py-1 h-7"
+                         className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white text-xs py-1 h-7 shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 rounded-lg"
                          onClick={(e) => handleQuickStatusUpdate(e, 'shortlisted')}
                        >
                          ✓ Shortlist
                        </Button>
                        <Button
                          size="sm"
-                         variant="destructive"
-                         className="flex-1 text-xs py-1 h-7"
+                         className="flex-1 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white text-xs py-1 h-7 shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 rounded-lg"
                          onClick={(e) => handleQuickStatusUpdate(e, 'rejected')}
                        >
                          ✗ Reject

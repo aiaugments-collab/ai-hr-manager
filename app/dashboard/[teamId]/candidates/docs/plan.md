@@ -52,18 +52,7 @@ This plan outlines the complete workflow for implementing the candidate manageme
   - Return parsed content and metadata
   - Handle parsing errors gracefully
 
-### 1.4 Database Schema for PDF Content
-```typescript
-interface CandidateDocument {
-  id: string;
-  teamId: string;
-  fileName: string;
-  fileSize: number;
-  uploadedAt: Date;
-  markdownContent: string; // Parsed PDF content as markdown
-  processingStatus: 'pending' | 'completed' | 'failed';
-  processingError?: string;
-}
+
 ```
 
 ---
