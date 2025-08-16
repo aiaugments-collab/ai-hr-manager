@@ -69,168 +69,226 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold flex items-center">
-          <Settings className="h-8 w-8 mr-3" />
-          Settings
-        </h1>
-        <p className="text-muted-foreground">
-          Configure storage providers and system settings
-        </p>
-      </div>
-
-      {/* Storage Provider Settings */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Cloud className="h-5 w-5 mr-2" />
-            Storage Provider
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            Choose where your documents are stored. You can switch between providers anytime.
+    <div className="flex-col min-h-screen">
+      <div className="flex-1 space-y-6 p-6 md:p-8">
+        {/* Header */}
+        <div>
+          <h1 className="text-3xl font-bold text-gradient-primary flex items-center">
+            <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+              <Settings className="h-6 w-6 text-white" />
+            </div>
+            Settings
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 mt-1">
+            Configure storage providers and system settings
           </p>
-          
-          {/* Firebase Storage */}
-          <div className="flex items-center justify-between p-4 border rounded-lg">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                <Database className="h-6 w-6 text-orange-600" />
-              </div>
-              <div>
-                <h3 className="font-medium">Firebase Storage</h3>
-                <p className="text-sm text-muted-foreground">Google Cloud Storage with Firebase integration</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              {currentStorage === 'firebase' && (
-                <Badge variant="default" className="bg-green-100 text-green-700">
-                  <CheckCircle className="h-3 w-3 mr-1" />
-                  Active
-                </Badge>
-              )}
-              <Button
-                variant={currentStorage === 'firebase' ? 'outline' : 'default'}
-                size="sm"
-                onClick={() => switchStorageProvider('firebase')}
-                disabled={switching || currentStorage === 'firebase'}
-              >
-                {currentStorage === 'firebase' ? 'Current' : 'Switch to Firebase'}
-              </Button>
-            </div>
-          </div>
+        </div>
 
-          {/* Cloudinary Storage */}
-          <div className="flex items-center justify-between p-4 border rounded-lg">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Cloud className="h-6 w-6 text-blue-600" />
+        {/* Storage Provider Settings */}
+        <Card className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl">
+          <CardHeader>
+            <CardTitle className="flex items-center text-lg font-semibold text-slate-800 dark:text-slate-200">
+              <div className="h-6 w-6 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center mr-3 shadow-sm">
+                <Cloud className="h-4 w-4 text-white" />
               </div>
-              <div>
-                <h3 className="font-medium">Cloudinary</h3>
-                <p className="text-sm text-muted-foreground">Optimized media storage and delivery</p>
+              Storage Provider
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Choose where your documents are stored. You can switch between providers anytime.
+            </p>
+            
+            {/* Firebase Storage */}
+            <div className="flex items-center justify-between p-4 bg-white/70 dark:bg-slate-700/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-600/60 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shadow-md">
+                  <Database className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-800 dark:text-slate-200">Firebase Storage</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Google Cloud Storage with Firebase integration</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                {currentStorage === 'firebase' && (
+                  <Badge className="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 text-green-700 dark:text-green-300 border-0 shadow-sm">
+                    <CheckCircle className="h-3 w-3 mr-1" />
+                    Active
+                  </Badge>
+                )}
+                <Button
+                  onClick={() => switchStorageProvider('firebase')}
+                  disabled={switching || currentStorage === 'firebase'}
+                  className={currentStorage === 'firebase' 
+                    ? 'bg-white/70 dark:bg-slate-700/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-600/60 hover:shadow-md transition-all duration-200 rounded-xl text-slate-700 dark:text-slate-300'
+                    : 'bg-gradient-to-r from-orange-500 to-red-600 text-white hover:from-orange-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 rounded-xl h-9 px-4'
+                  }
+                >
+                  {currentStorage === 'firebase' ? 'Current' : 'Switch to Firebase'}
+                </Button>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              {currentStorage === 'cloudinary' && (
-                <Badge variant="default" className="bg-green-100 text-green-700">
-                  <CheckCircle className="h-3 w-3 mr-1" />
-                  Active
-                </Badge>
-              )}
-              <Button
-                variant={currentStorage === 'cloudinary' ? 'outline' : 'default'}
-                size="sm"
-                onClick={() => switchStorageProvider('cloudinary')}
-                disabled={switching || currentStorage === 'cloudinary'}
-              >
-                {currentStorage === 'cloudinary' ? 'Current' : 'Switch to Cloudinary'}
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
-      {/* Database Provider Settings */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Database className="h-5 w-5 mr-2" />
-            Database Provider
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            Currently using Firebase Firestore for document metadata and search.
-          </p>
-          
-          <div className="flex items-center justify-between p-4 border rounded-lg">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                <Database className="h-6 w-6 text-orange-600" />
+            {/* Cloudinary Storage */}
+            <div className="flex items-center justify-between p-4 bg-white/70 dark:bg-slate-700/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-600/60 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-md">
+                  <Cloud className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-800 dark:text-slate-200">Cloudinary</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Optimized media storage and delivery</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-medium">Firebase Firestore</h3>
-                <p className="text-sm text-muted-foreground">NoSQL document database with real-time sync</p>
+              <div className="flex items-center space-x-3">
+                {currentStorage === 'cloudinary' && (
+                  <Badge className="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 text-green-700 dark:text-green-300 border-0 shadow-sm">
+                    <CheckCircle className="h-3 w-3 mr-1" />
+                    Active
+                  </Badge>
+                )}
+                <Button
+                  onClick={() => switchStorageProvider('cloudinary')}
+                  disabled={switching || currentStorage === 'cloudinary'}
+                  className={currentStorage === 'cloudinary' 
+                    ? 'bg-white/70 dark:bg-slate-700/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-600/60 hover:shadow-md transition-all duration-200 rounded-xl text-slate-700 dark:text-slate-300'
+                    : 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white hover:from-blue-600 hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 rounded-xl h-9 px-4'
+                  }
+                >
+                  {currentStorage === 'cloudinary' ? 'Current' : 'Switch to Cloudinary'}
+                </Button>
               </div>
-            </div>
-            <Badge variant="default" className="bg-green-100 text-green-700">
-              <CheckCircle className="h-3 w-3 mr-1" />
-              Active
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Status Message */}
-      {message && (
-        <Card className={message.type === 'success' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}>
-          <CardContent className="pt-6">
-            <div className={`flex items-center space-x-2 ${
-              message.type === 'success' ? 'text-green-700' : 'text-red-700'
-            }`}>
-              {message.type === 'success' ? (
-                <CheckCircle className="h-5 w-5" />
-              ) : (
-                <AlertCircle className="h-5 w-5" />
-              )}
-              <span>{message.text}</span>
             </div>
           </CardContent>
         </Card>
-      )}
 
-      {/* Provider Comparison */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Provider Comparison</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h4 className="font-medium mb-2">Firebase Storage</h4>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Integrated with Firebase ecosystem</li>
-                <li>• Pay-as-you-go pricing</li>
-                <li>• Global CDN</li>
-                <li>• Security rules integration</li>
-              </ul>
+        {/* Database Provider Settings */}
+        <Card className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl">
+          <CardHeader>
+            <CardTitle className="flex items-center text-lg font-semibold text-slate-800 dark:text-slate-200">
+              <div className="h-6 w-6 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center mr-3 shadow-sm">
+                <Database className="h-4 w-4 text-white" />
+              </div>
+              Database Provider
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Currently using Firebase Firestore for document metadata and search.
+            </p>
+            
+            <div className="flex items-center justify-between p-4 bg-white/70 dark:bg-slate-700/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-600/60 rounded-xl shadow-sm">
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shadow-md">
+                  <Database className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-800 dark:text-slate-200">Firebase Firestore</h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">NoSQL document database with real-time sync</p>
+                </div>
+              </div>
+              <Badge className="bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 text-green-700 dark:text-green-300 border-0 shadow-sm">
+                <CheckCircle className="h-3 w-3 mr-1" />
+                Active
+              </Badge>
             </div>
-            <div>
-              <h4 className="font-medium mb-2">Cloudinary</h4>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Optimized for media files</li>
-                <li>• Advanced transformation features</li>
-                <li>• Built-in CDN</li>
-                <li>• Media analytics</li>
-              </ul>
+          </CardContent>
+        </Card>
+
+        {/* Status Message */}
+        {message && (
+          <Card className={`shadow-lg ${
+            message.type === 'success' 
+              ? 'bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200/60 dark:border-green-800/60' 
+              : 'bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 border border-red-200/60 dark:border-red-800/60'
+          }`}>
+            <CardContent className="pt-6">
+              <div className="flex items-center space-x-3">
+                <div className={`h-6 w-6 rounded-lg flex items-center justify-center shadow-sm ${
+                  message.type === 'success' 
+                    ? 'bg-gradient-to-br from-green-500 to-emerald-600' 
+                    : 'bg-gradient-to-br from-red-500 to-pink-600'
+                }`}>
+                  {message.type === 'success' ? (
+                    <CheckCircle className="h-4 w-4 text-white" />
+                  ) : (
+                    <AlertCircle className="h-4 w-4 text-white" />
+                  )}
+                </div>
+                <span className={`font-medium ${
+                  message.type === 'success' ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'
+                }`}>
+                  {message.text}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Provider Comparison */}
+        <Card className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-slate-800 dark:text-slate-200">Provider Comparison</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-4 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl border border-orange-200/60 dark:border-orange-800/60 shadow-sm">
+                <h4 className="font-semibold mb-3 text-slate-800 dark:text-slate-200 flex items-center">
+                  <div className="w-6 h-6 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center mr-2 shadow-sm">
+                    <Database className="h-4 w-4 text-white" />
+                  </div>
+                  Firebase Storage
+                </h4>
+                <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-2">
+                  <li className="flex items-center">
+                    <CheckCircle className="h-3 w-3 text-orange-500 mr-2" />
+                    Integrated with Firebase ecosystem
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-3 w-3 text-orange-500 mr-2" />
+                    Pay-as-you-go pricing
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-3 w-3 text-orange-500 mr-2" />
+                    Global CDN
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-3 w-3 text-orange-500 mr-2" />
+                    Security rules integration
+                  </li>
+                </ul>
+              </div>
+              <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl border border-blue-200/60 dark:border-blue-800/60 shadow-sm">
+                <h4 className="font-semibold mb-3 text-slate-800 dark:text-slate-200 flex items-center">
+                  <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center mr-2 shadow-sm">
+                    <Cloud className="h-4 w-4 text-white" />
+                  </div>
+                  Cloudinary
+                </h4>
+                <ul className="text-sm text-slate-600 dark:text-slate-400 space-y-2">
+                  <li className="flex items-center">
+                    <CheckCircle className="h-3 w-3 text-blue-500 mr-2" />
+                    Optimized for media files
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-3 w-3 text-blue-500 mr-2" />
+                    Advanced transformation features
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-3 w-3 text-blue-500 mr-2" />
+                    Built-in CDN
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-3 w-3 text-blue-500 mr-2" />
+                    Media analytics
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

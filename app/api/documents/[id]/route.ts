@@ -4,14 +4,15 @@ import { logger } from '@/lib/utils/logger';
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const apiTimer = logger.time('Document Delete API Request', 'DocumentDeleteAPI');
   
   try {
-    logger.info('Document delete API request received', { documentId: params.id }, 'DocumentDeleteAPI');
+    const resolvedParams = await params;
+    logger.info('Document delete API request received', { documentId: resolvedParams.id }, 'DocumentDeleteAPI');
     
-    const documentId = params.id;
+    const documentId = resolvedParams.id;
     
     // Validate document ID
     if (!documentId || documentId.trim().length === 0) {
@@ -60,14 +61,15 @@ export async function DELETE(
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const apiTimer = logger.time('Document Get API Request', 'DocumentGetAPI');
   
   try {
-    logger.info('Document get API request received', { documentId: params.id }, 'DocumentGetAPI');
+    const resolvedParams = await params;
+    logger.info('Document get API request received', { documentId: resolvedParams.id }, 'DocumentGetAPI');
     
-    const documentId = params.id;
+    const documentId = resolvedParams.id;
     
     // Validate document ID
     if (!documentId || documentId.trim().length === 0) {

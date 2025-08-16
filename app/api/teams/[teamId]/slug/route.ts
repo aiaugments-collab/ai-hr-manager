@@ -5,18 +5,19 @@ import { logger } from '@/lib/utils/logger';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { teamId: string } }
+  { params }: { params: Promise<{ teamId: string }> }
 ) {
   const apiTimer = logger.time('Create Team Slug API Request', 'CreateTeamSlugAPI');
   
   try {
-    logger.info('Create team slug API request received', { teamId: params.teamId }, 'CreateTeamSlugAPI');
+    const resolvedParams = await params;
+    logger.info('Create team slug API request received', { teamId: resolvedParams.teamId }, 'CreateTeamSlugAPI');
     
     const body = await request.json();
     const { displayName, preferredSlug } = body;
     
     if (!displayName) {
-      logger.warn('No display name provided in create team slug request', { teamId: params.teamId }, 'CreateTeamSlugAPI');
+      logger.warn('No display name provided in create team slug request', { teamId: resolvedParams.teamId }, 'CreateTeamSlugAPI');
       return NextResponse.json(
         { error: 'Display name is required' },
         { status: 400 }
@@ -24,10 +25,10 @@ export async function POST(
     }
 
     // Resolve team ID (in case they passed a slug)
-    const teamId = await TeamResolver.resolveTeamId(params.teamId);
+    const teamId = await TeamResolver.resolveTeamId(resolvedParams.teamId);
     
     if (!teamId) {
-      logger.warn('Could not resolve team ID', { teamIdentifier: params.teamId }, 'CreateTeamSlugAPI');
+      logger.warn('Could not resolve team ID', { teamIdentifier: resolvedParams.teamId }, 'CreateTeamSlugAPI');
       return NextResponse.json(
         { error: 'Team not found' },
         { status: 404 }
@@ -64,7 +65,8 @@ export async function POST(
 
   } catch (error) {
     apiTimer();
-    logger.error('Error in create team slug API', { error, teamId: params.teamId }, 'CreateTeamSlugAPI');
+    const resolvedParams = await params;
+    logger.error('Error in create team slug API', { error, teamId: resolvedParams.teamId }, 'CreateTeamSlugAPI');
 
     return NextResponse.json(
       { 
@@ -78,13 +80,14 @@ export async function POST(
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { teamId: string } }
+  { params }: { params: Promise<{ teamId: string }> }
 ) {
   try {
-    logger.info('Get team slug API request received', { teamId: params.teamId });
+    const resolvedParams = await params;
+    logger.info('Get team slug API request received', { teamId: resolvedParams.teamId });
     
     // Resolve team ID (in case they passed a slug)
-    const teamId = await TeamResolver.resolveTeamId(params.teamId);
+    const teamId = await TeamResolver.resolveTeamId(resolvedParams.teamId);
     
     if (!teamId) {
       return NextResponse.json(
@@ -108,7 +111,8 @@ export async function GET(
     });
 
   } catch (error) {
-    logger.error('Error in get team slug API', { error, teamId: params.teamId });
+    const resolvedParams = await params;
+    logger.error('Error in get team slug API', { error, teamId: resolvedParams.teamId });
 
     return NextResponse.json(
       { 

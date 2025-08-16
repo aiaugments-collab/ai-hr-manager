@@ -34,13 +34,13 @@ const navigationItems: SidebarItem[] = [
     ],
   },
   {
-    name: "Documents",
+    name: "Knowledge Base",
     href: "/documents",
     icon: FileText,
     type: "item",
     subItems: [
       {
-        name: "Upload Documents",
+        name: "Upload Files",
         href: "/documents/upload",
         icon: Upload,
         type: "subitem",
@@ -124,7 +124,7 @@ export default function Layout(props: { children: React.ReactNode }) {
     };
 
     ensureSlugAndRedirect();
-  }, [resolvedTeamId, isResolving, params.teamId, router]);
+  }, [resolvedTeamId, isResolving, params.teamId, router, user]);
 
   const team = user.useTeam(resolvedTeamId || '');
 

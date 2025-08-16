@@ -1,7 +1,7 @@
 import { PageClient } from "./page-client";
 
 export const metadata = {
-  title: "Dashboard - Stack Template",
+  title: "Dashboard - AI HR Manager",
 };
 
 export default function Dashboard() {

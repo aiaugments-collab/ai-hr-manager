@@ -17,7 +17,7 @@ import {
 } from "./ui/breadcrumb";
 import { buttonVariants } from "./ui/button";
 import { Separator } from "./ui/separator";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "./ui/sheet";
 
 function useSegment(basePath: string) {
   const path = usePathname();
@@ -90,6 +90,9 @@ function NavItem(props: {
   const selected = segment === props.item.href;
   const hasSubItems = props.item.subItems && props.item.subItems.length > 0;
   const hasSelectedSubItem = hasSubItems && props.item.subItems!.some(subItem => segment === subItem.href);
+  
+  // Only highlight parent if it's directly selected, not when sub-items are selected
+  const shouldHighlightParent = selected && !hasSelectedSubItem;
 
   return (
     <div className="w-full">
@@ -97,7 +100,7 @@ function NavItem(props: {
         href={props.basePath + props.item.href}
         className={cn(
           "flex items-center gap-3 px-3 py-2.5 mx-1 rounded-xl text-sm font-medium transition-all duration-200 group relative overflow-hidden",
-          selected || hasSelectedSubItem
+          shouldHighlightParent
             ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25" 
             : "text-slate-700 dark:text-slate-300 hover:bg-white/60 dark:hover:bg-slate-700/60 hover:text-slate-900 dark:hover:text-white hover:shadow-md",
           "w-full"
@@ -107,10 +110,10 @@ function NavItem(props: {
       >
         <props.item.icon className={cn(
           "h-5 w-5 transition-all duration-200",
-          selected || hasSelectedSubItem ? "text-white" : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300"
+          shouldHighlightParent ? "text-white" : "text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300"
         )} />
         <span className="relative z-10">{props.item.name}</span>
-        {(selected || hasSelectedSubItem) && (
+        {shouldHighlightParent && (
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 opacity-10 rounded-xl" />
         )}
       </Link>
@@ -233,6 +236,7 @@ export default function SidebarLayout(props: {
                 <Menu />
               </SheetTrigger>
               <SheetContent side="left" className="w-[240px] p-0">
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 <SidebarContent
                   onNavigate={() => setSidebarOpen(false)}
                   items={props.items}

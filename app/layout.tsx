@@ -8,8 +8,8 @@ import { Provider } from "./provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Stack Template",
-  description: "A Multi-tenant Next.js Starter Template",
+  title: "AI HR Manager - Intelligent Human Resource Management",
+  description: "Streamline your HR processes with AI-powered candidate management, document processing, and intelligent assistance.",
 };
 
 export default function RootLayout({
