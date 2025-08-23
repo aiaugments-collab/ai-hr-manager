@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "type-check": "tsc --noEmit",
     "lint": "tsc --noEmit && echo 'No TypeScript errors found!'"
   },
@@ -25,6 +25,7 @@
     "clsx": "^2.1.1",
     "firebase": "^12.1.0",
     "firebase-admin": "^13.4.0",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.475.0",
     "mammoth": "^1.10.0",
     "next": "^15.1.7",
@@ -42,6 +43,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
